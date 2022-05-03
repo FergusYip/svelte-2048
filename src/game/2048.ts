@@ -55,19 +55,45 @@ function mergeTilesLeft(grid: Grid): { grid: Grid; score: number } {
 	let score = 0;
 	for (const row of grid) {
 		const tiles = row.filter(notEmpty);
+
+		if (tiles.length === 1) {
+			newGrid.push(padTiles([tiles[0]], grid.length));
+			continue;
+		}
+
 		const newTiles: GridTile[] = [];
-		let i = 0;
-		while (i < tiles.length - 1) {
+
+		for (let i = 0; i < tiles.length; i++) {
+			if (i === tiles.length - 1) {
+				newTiles.push(tiles[i]);
+				continue;
+			}
+
 			if (tiles[i].value === tiles[i + 1].value) {
 				newTiles.push({ id: newId(), value: tiles[i].value * 2 });
 				score += tiles[i].value * 2;
 				i++; // Skip next tile
+			} else {
+				newTiles.push(tiles[i]);
 			}
-			i++;
 		}
+
+		// let i = 0;
+		// while (i < tiles.length - 1) {
+		// 	if (tiles[i].value === tiles[i + 1].value) {
+		// 		newTiles.push({ id: newId(), value: tiles[i].value * 2 });
+		// 		score += tiles[i].value * 2;
+		// 		i++; // Skip next tile
+		// 	} else {
+		// 		newTiles.push(tiles[i]);
+		// 	}
+		// 	i++;
+		// }
+
 		newGrid.push(padTiles(newTiles, grid.length));
 	}
 
+	// printGrid(newGrid);
 	return {
 		grid: newGrid,
 		score
@@ -183,11 +209,11 @@ function rotateGridRight(grid: Grid): Grid {
 }
 
 function rotateGridLeft(grid: Grid): Grid {
-	return grid[0].map((_, index) => grid.map((row) => row[row.length - 1 - index]).reverse());
+	return grid[0].map((_, c) => grid.map((_, r) => grid[r][c])).reverse();
 }
 
 function flipGrid(grid: Grid): Grid {
-	return [...grid].reverse();
+	return rotateGridRight(rotateGridRight(grid));
 }
 
 function cloneGrid(grid: Grid) {
@@ -208,4 +234,10 @@ function padTiles(tiles: GridRow, length: number) {
 		padded.push(null);
 	}
 	return padded;
+}
+
+export function printGrid(grid: Grid) {
+	for (const row of grid) {
+		console.log(row.map((item) => item?.value ?? null));
+	}
 }

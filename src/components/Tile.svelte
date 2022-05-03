@@ -8,7 +8,7 @@
 </script>
 
 <div
-	class={`tile tile-${value}`}
+	class="tile tile-{value}"
 	bind:clientWidth={w}
 	bind:clientHeight={h}
 	style="transform: translate({w * x}px, {h * y}px)"
@@ -35,6 +35,8 @@
 		text-align: center;
 		background-color: #29275e;
 		color: #f9f6f2;
+
+		position: absolute;
 	}
 
 	.tile-2 {
