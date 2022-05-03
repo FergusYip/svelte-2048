@@ -1,8 +1,20 @@
 <script lang="ts">
 	export let value: number;
+	export let x: number;
+	export let y: number;
+
+	let w: number;
+	let h: number;
 </script>
 
-<div class={`tile tile-${value}`}>{value}</div>
+<div
+	class={`tile tile-${value}`}
+	bind:clientWidth={w}
+	bind:clientHeight={h}
+	style="transform: translate({w * x}px, {h * y}px)"
+>
+	{value}
+</div>
 
 <style>
 	:root {
