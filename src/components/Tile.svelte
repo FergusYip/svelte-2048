@@ -1,17 +1,21 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	export let value: number;
 	export let x: number;
 	export let y: number;
 
-	let w: number;
-	let h: number;
+	let w: number = 0;
+	let h: number = 0;
+
+	$: xPos = w * x;
+	$: yPos = h * y;
 </script>
 
 <div
 	class="tile tile-{value}"
 	bind:clientWidth={w}
 	bind:clientHeight={h}
-	style="transform: translate({w * x}px, {h * y}px)"
+	style={`transform: translate(${xPos}px, ${yPos}px)`}
 >
 	{value}
 </div>
@@ -37,6 +41,7 @@
 		color: #f9f6f2;
 
 		position: absolute;
+		transition: transform ease-in 100ms;
 	}
 
 	.tile-2 {
